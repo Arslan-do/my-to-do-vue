@@ -112,6 +112,7 @@ color: #ffff;
   border: 1px solid #9E78CF;
   border-radius: 4px;
   background-color: #1D1825;
+  color: #9E78CF;
 }
 
 .task-item {
@@ -168,6 +169,5 @@ line-height: 100%;
   height: 20px;
   cursor: pointer;
 }
-
 
 </style>
