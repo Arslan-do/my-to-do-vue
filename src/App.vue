@@ -4,9 +4,9 @@ import { ref, computed } from 'vue'
 const tasks = ref([
   { id: 1, text: 'Купить хлеб и изучить Vue.js', completed: true },
   { id: 2, text: 'Купить продуктов и изучить Vue.js', completed: false },
-  { id: 3, text: 'Купить хлеб и изучить Vue.js', completed: false },
+  { id: 3, text: 'Занятся спортом и изучить Vue.js', completed: false },
   { id: 4, text: 'Купить хлеб и изучить Vue.js', completed: false },
-  { id: 5, text: 'To study React fundamentals', completed: false },
+  { id: 5, text: 'Изучить основы React', completed: false },
 ])
 
 const newTaskText = ref('')
@@ -47,7 +47,7 @@ const deleteTask = (id) => {
         <div v-for="task in todoTasks" 
         :key="task.id" 
         class="task-item">
-        <span :class="{ completed: task.completed }">{{ task.text }}></span>
+        <span :class="{ completed: task.completed }" > {{ task.text }} </span>
             <input type="checkbox"
             v-model="task.completed"
             />
@@ -59,7 +59,7 @@ const deleteTask = (id) => {
     </div>
 
     <div class="done-section" >
-<h3>Done <span v-if="doneTasks.length > 0">- {{ doneTasks.length }}</span></h3>
+<h3>Done <span v-if="doneTasks.length > 0" >- {{ doneTasks.length }}</span></h3>
 <div v-for="task in doneTasks" 
         :key="task.id" 
         class="task-item"
@@ -86,7 +86,7 @@ const deleteTask = (id) => {
 .todo-app {
   max-width: 585px;
   max-height: 758px;
-  margin: 0 auto;
+  margin: 40px auto;
   font-family: sans-serif;
   color: #ffff;
 }
@@ -103,6 +103,8 @@ width: 32px;
 height: 32px;
 background-color: #9E78CF;
 color: #ffff;
+border: none;
+border-radius: 5px;
 }
 
 .add-task input {
