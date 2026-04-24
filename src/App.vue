@@ -77,14 +77,15 @@ const deleteTask = (id) => {
 </template>
 
 <style scoped>
+:global(body) {
+  background-color: #000000;
+  margin: 0;
+  min-height: 100vh;
+}
 .todo-app {
-  position: absolute;
-  left: 600px;
-  top: 100px;
   background-color: #1d1825;
   width: 583px;
-  height: max(100% 758px);
-  
+  height: max(100%, 758px);
   border-radius: 20px;
   margin: 40px auto;
   font-family: 'Inter', sans-serif;
@@ -110,7 +111,7 @@ border-width: 1px;
   color: #ffff;
   border: none;
   border-radius: 10px;
-  font-size: 35px;          /* Размер плюса */
+  font-size: 35px;         
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,12 +173,13 @@ h3 {
 padding-left: 60px;
   width: 115px;
   height: 19px;
-  font-family: Inter;
+  font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 100%;
 }
 .done-h3{
+  font-family: 'Inter', sans-serif;
   margin: 10px 60px;
   padding: 50px 10px 0px 10px;
 }
@@ -206,17 +208,9 @@ label span {
   font-size: 23px;
 }
 
-/* .task-item input[type='checkbox'] {
-  accent-color: #9e78cf;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-} */
-
-/* .task-item input[type="checkbox"]:hover {
-  box-shadow: 0 0 0 1px #9e78cf;
-} */
-
+.done-section {
+  padding: 10px 20px 20px 0px;
+}
 
 .empty-state{
   margin: 5px 10px 5px 10px;
