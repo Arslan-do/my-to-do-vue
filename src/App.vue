@@ -32,6 +32,7 @@ const deleteTask = (id) => {
 
 <template>
   <div class="todo-app">
+    <div class="container"> 
     <div class="add-task">
       <input
         v-model="newTaskText"
@@ -44,10 +45,8 @@ const deleteTask = (id) => {
       <h3>Tasks to do - {{ todoTasks.length }}</h3>
       <div v-for="task in todoTasks" :key="task.id" class="task-item">
         <span :class="{ completed: task.completed }"> {{ task.text }} </span>
-        <label >
-          <input type="checkbox" v-model="task.completed" />
-          <span></span>
-        </label>
+        <img src="/src\image\Group 1.svg" alt="done" @click="task.completed = !task.completed"
+  style="cursor: pointer">
         <button @click="deleteTask(task.id)" class="delete-btn">
           <img src="/src\image\TrashSimple.svg" alt="Удалить" />
         </button>
@@ -60,12 +59,10 @@ const deleteTask = (id) => {
       </h3>
       <div v-for="task in doneTasks" :key="task.id" class="task-item">
         <span class="completed-done">{{ task.text }}</span>
-        <label >
-          <input type="checkbox" v-model="task.completed" />
-          <span></span>
-        </label>
+        <img src="/src\image\Group 1.svg" alt="done" @click="task.completed = !task.completed"
+  style="cursor: pointer">
         <button @click="deleteTask(task.id)" class="delete-btn">
-          <img src="/src\image\TrashSimple.svg" alt="нет картины" />
+          <img src="/src\image\TrashSimple.svg"  alt="нет картины" />
         </button>
       </div>
 
@@ -74,11 +71,12 @@ const deleteTask = (id) => {
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <style scoped>
 :global(body) {
-  background-color: #000000;
+  background-color: #0D0714;
   margin: 0;
   min-height: 100vh;
 }
@@ -91,27 +89,33 @@ const deleteTask = (id) => {
   font-family: 'Inter', sans-serif;
   color: #ffff;
 }
+.container{
+width: 432px;
+height: 100%;
+margin: 0px 55px;
+}
 
 .add-task {
-padding: 50px 65px 30px;
+padding: 50px 0px 30px;
 width: 454px;
-height: 32px;
+height: 40px;
 border-radius: 10px;
 border-width: 1px;
   display: flex;
   gap: 8px;
   flex-flow: row;
-  margin-bottom: 24px;
 }
 
 .add-btn {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   background-color: #9e78cf;
-  color: #ffff;
+  color: #FFFFFF;
   border: none;
   border-radius: 10px;
-  font-size: 35px;         
+  font-size: 40px;
+  font-weight: 100;
+  line-height: 1;         
   display: flex;
   align-items: center;
   justify-content: center;
@@ -133,9 +137,8 @@ border-width: 1px;
   background: #15101c;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0px 20px;
-  margin: 16px 60px;
+  padding: 0px 10px;
+  margin-bottom: 12px;
   border-radius: 10px;
 }
 
@@ -169,8 +172,7 @@ border-width: 1px;
 }
 
 h3 {
-  margin:10px;
-padding-left: 60px;
+  padding: 20px 0px 0px 0px;
   width: 115px;
   height: 19px;
   font-family: 'Inter', sans-serif;
@@ -180,40 +182,14 @@ padding-left: 60px;
 }
 .done-h3{
   font-family: 'Inter', sans-serif;
-  margin: 10px 60px;
-  padding: 50px 10px 0px 10px;
-}
-
-label input {
-  display: none;
-}
-
-label span {
-  margin: 10px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  border: 2px solid #9e78cf;
-  position: relative;
-  border-radius: 2px;
-  padding: 0 8px 0 10px;
-}
-
-[type=checkbox]:checked + span:before{
-  color: #9e78cf;
-  content: '\2714';
-  position: absolute;
-  top: -5px;
-  left: 0;
-  font-size: 23px;
+  padding: 40px 0px 0px 0px;
 }
 
 .done-section {
-  padding: 10px 20px 20px 0px;
+  padding: 10px 20px 40px 0px;
 }
 
 .empty-state{
-  margin: 5px 10px 5px 10px;
-  padding: 0px 10px 10px 50px;
+  padding: 0px 10px 10px 0px;
 }
 </style>
