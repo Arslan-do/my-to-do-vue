@@ -39,7 +39,7 @@ const deleteTask = (id) => {
         @keyup.enter="addTask"
         placeholder="Add a new task"
       />
-      <button @click="addTask" class="add-btn">+</button>
+      <button @click="addTask" class="add-btn"><img src="/src\image\Vector.svg" alt="pulus"></button>
     </div>
     <div class="tasks-section">
       <h3>Tasks to do - {{ todoTasks.length }}</h3>
@@ -83,21 +83,18 @@ const deleteTask = (id) => {
 .todo-app {
   background-color: #1d1825;
   width: 583px;
-  height: max(100%, 758px);
   border-radius: 20px;
   margin: 40px auto;
   font-family: 'Inter', sans-serif;
   color: #ffff;
 }
 .container{
+padding: 55px 85px 55px  60px;
 width: 432px;
 height: 100%;
-margin: 0px 55px;
 }
 
 .add-task {
-padding: 50px 0px 30px;
-width: 454px;
 height: 40px;
 border-radius: 10px;
 border-width: 1px;
@@ -132,13 +129,12 @@ border-width: 1px;
 }
 
 .task-item {
-  width: 432px;
   height: 70px;
   background: #15101c;
   display: flex;
   align-items: center;
-  padding: 0px 10px;
-  margin-bottom: 12px;
+  padding: 0px 20px;
+  margin-bottom: 16px;
   border-radius: 10px;
 }
 
@@ -165,6 +161,7 @@ border-width: 1px;
 .delete-btn {
   width: 30px;
   height: 30px;
+  padding: 4px 8px;
   background: none;
   border: none;
   cursor: pointer;
@@ -172,7 +169,8 @@ border-width: 1px;
 }
 
 h3 {
-  padding: 20px 0px 0px 0px;
+  margin: 0;
+  padding: 60px 0px 17px 0px;
   width: 115px;
   height: 19px;
   font-family: 'Inter', sans-serif;
@@ -182,14 +180,7 @@ h3 {
 }
 .done-h3{
   font-family: 'Inter', sans-serif;
-  padding: 40px 0px 0px 0px;
+  padding: 60px 0px 17px 0px;
 }
 
-.done-section {
-  padding: 10px 20px 40px 0px;
-}
-
-.empty-state{
-  padding: 0px 10px 10px 0px;
-}
 </style>
