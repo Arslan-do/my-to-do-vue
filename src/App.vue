@@ -51,7 +51,7 @@ const deleteTask = (id) => {
         <div v-for="task in todoTasks" :key="task.id" class="todo-app__task-item">
           <span :class="{ completed: task.completed }"> {{ task.text }} </span>
 
-          <GroupIcon @click="task.completed = !task.completed" style="cursor: pointer"/>
+          <GroupIcon @click="task.completed = !task.completed"/>
           
           <button @click="deleteTask(task.id)" class="todo-app__delete-btn">
             <TrashIcon/>
@@ -66,7 +66,7 @@ const deleteTask = (id) => {
         <div v-for="task in doneTasks" :key="task.id" class="todo-app__task-item">
           <span class="completed-done">{{ task.text }}</span>
           
-          <GroupIcon @click="task.completed = !task.completed" style="cursor: pointer"/>
+          <GroupIcon @click="task.completed = !task.completed" class="todo-app__task-item-done"/>
           
           <button @click="deleteTask(task.id)" class="todo-app__delete-btn">
             <TrashIcon/>
@@ -136,7 +136,7 @@ const deleteTask = (id) => {
 }
 
 .todo-app__tasks-section {
-  margin: 60px 0px 17px 0px;
+  margin: 60px 0px 0px 0px;
 }
 
 .todo-app__done-section {
@@ -171,6 +171,10 @@ const deleteTask = (id) => {
 .todo-app__done-section .todo-app__task-item span {
   color: #78cfb0;
   text-decoration: line-through;
+}
+
+.todo-app__task-item-done{
+  cursor: pointer;
 }
 
 .todo-app__delete-btn {
