@@ -135,12 +135,23 @@ const deleteTask = (id) => {
   border-radius: 10px;
 }
 
+.todo-app__tasks-section {
+  margin: 60px 0px 17px 0px;
+}
+
+.todo-app__done-section {
+  margin: 60px 0px 0px 0px;
+}
+
+.todo-app__done-section .todo-app__task-item:last-child {
+  margin-bottom: 0;
+}
+
 .todo-app__task-item {
-  height: 70px;
   background: #15101c;
   display: flex;
   align-items: center;
-  padding: 0px 20px;
+  padding: 22px 20px;
   margin-bottom: 16px;
   border-radius: 10px;
 }
@@ -157,12 +168,9 @@ const deleteTask = (id) => {
   color: #999;
 }
 
-.todo-app__completed-done {
+.todo-app__done-section .todo-app__task-item span {
+  color: #78cfb0;
   text-decoration: line-through;
-  color: #78cfb0;
-}
-.todo-app__done-section .task-item span {
-  color: #78cfb0;
 }
 
 .todo-app__delete-btn {
@@ -176,8 +184,6 @@ const deleteTask = (id) => {
 }
 
 .todo-app__h32 {
-  margin: 0;
-  padding: 60px 0px 17px 0px;
   width: 115px;
   height: 19px;
   font-family: 'Inter', sans-serif;
@@ -186,9 +192,7 @@ const deleteTask = (id) => {
   line-height: 100%;
 }
 .todo-app__h33 {
-  margin: 0;
   font-family: 'Inter', sans-serif;
-  padding: 60px 0px 17px 0px;
   font-weight: 400;
   font-size: 16px;
   line-height: 100%;
