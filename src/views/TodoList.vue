@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { getTodos } from '@/api/todo/getTodos';
 import { useRouter } from 'vue-router';
 import TrashIcon from '@/components/icons/TrashIcon.vue'; 
 import GroupIcon from '@/components/icons/GroupIcon.vue';
@@ -38,6 +39,16 @@ const deleteTask = (id) => {
 const onTodoNav = (id) => {
   router.push(`/todo/${id}`);
 };
+
+onMounted(async ()=>{
+  const rawTodos = await getTodos();
+  if (!Array.isArray(rawTodos)) return;
+  tasks.value = rawTodos.map((todo) => ({
+    id: todo.id,
+    text: todo.title ?? todo.text ?? '',
+    completed: Boolean(todo.completed),
+  }));
+})
 
 </script>
 
@@ -92,8 +103,7 @@ const onTodoNav = (id) => {
   </div>
 </template>
 
-<style scoped>
-
+<style>
 
 .todo-app {
   background-color: #1d1825;
@@ -103,11 +113,13 @@ const onTodoNav = (id) => {
   font-family: 'Inter', sans-serif;
   color: #ffffff;
 }
+
 .container {
   padding: 55px 85px 55px 60px;
   width: 432px;
   height: 100%;
 }
+
 
 .add-task {
   height: 40px;
@@ -207,7 +219,7 @@ const onTodoNav = (id) => {
 
 
 .h32 {
-  width: 115px;
+  width: 135px;
   height: 19px;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
@@ -221,6 +233,5 @@ const onTodoNav = (id) => {
   font-size: 16px;
   line-height: 100%;
 }
-
 
 </style>
