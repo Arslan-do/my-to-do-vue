@@ -92,3 +92,135 @@ const onTodoNav = (id) => {
   </div>
 </template>
 
+<style scoped>
+
+
+.todo-app {
+  background-color: #1d1825;
+  width: 583px;
+  border-radius: 20px;
+  margin: 40px auto;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+}
+.container {
+  padding: 55px 85px 55px 60px;
+  width: 432px;
+  height: 100%;
+}
+
+.add-task {
+  height: 40px;
+  border-radius: 10px;
+  border-width: 1px;
+  display: flex;
+  gap: 8px;
+  flex-flow: row;
+}
+
+.add-btn {
+  width: 40px;
+  height: 40px;
+  background-color: #9e78cf;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 40px;
+  font-weight: 100;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.add-task input {
+  width: 381px;
+  padding: 8px;
+  border: 1px solid #9e78cf;
+  background-color: #1d1825;
+  color: #9e78cf;
+  border-radius: 10px;
+}
+
+.tasks-section {
+  margin: 60px 0px 0px 0px;
+}
+
+.done-section {
+  margin: 60px 0px 0px 0px;
+}
+
+.done-section .task-item:last-child {
+  margin-bottom: 0;
+}
+
+.task-item {  
+  background: #15101c;
+  display: flex;
+  align-items: center;
+  padding: 22px 20px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+}
+
+.task-item span { 
+  width: 227px;
+  height: 19px;
+  color: #9e78cf;
+  flex: 1;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.done-section .task-item span {
+  color: #78cfb0;
+  text-decoration: line-through;
+}
+
+.task-item-done{
+  cursor: pointer;
+}
+
+.delete-btn {
+  width: 30px;
+  height: 30px;
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9e78cf;
+}
+
+.arrow-btn {
+      width: 30px;
+  height: 30px;
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9e78cf;
+}
+
+
+.h32 {
+  width: 115px;
+  height: 19px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+}
+
+.h33 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+}
+
+
+</style>
