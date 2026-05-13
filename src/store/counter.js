@@ -1,5 +1,5 @@
 import { ref } from "vue"
-const { defineStore } = require("pinia")
+import { defineStore } from 'pinia'
 
 export  const  useCounterStore = defineStore('counter', ()=>{
     const count = ref(0)

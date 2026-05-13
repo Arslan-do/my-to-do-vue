@@ -1,55 +1,53 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { getTodos } from '@/api/todo/getTodos';
-import { useRouter } from 'vue-router';
-import TrashIcon from '@/components/icons/TrashIcon.vue';
-import GroupIcon from '@/components/icons/GroupIcon.vue';
-import VectorIcon from '@/components/icons/VectorIcon.vue';
-import ArrowForward from '@/components/icons/ArrowForward.vue';
-import { useCounter } from '@/composables/useCounter';
+import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+import TrashIcon from '@/components/icons/TrashIcon.vue'
+import GroupIcon from '@/components/icons/GroupIcon.vue'
+import VectorIcon from '@/components/icons/VectorIcon.vue'
+import ArrowForward from '@/components/icons/ArrowForward.vue'
+import { useCounter } from '@/composables/useCounter'
+import { useTodoStore } from '@/store/todo'
+import { useMinWidth } from '@/composables/useMinWidth'
+import { MIN_TODO_LAYOUT_PX } from '@/constants/breakpoints'
 
-const tasks = ref([
-  { id: 1, text: 'Купить хлеб и изучить Vue.js', completed: false },
-  { id: 2, text: 'Купить продуктов и изучить Vue.js', completed: false },
-  { id: 3, text: 'Занятся спортом и изучить Vue.js', completed: false },
-  { id: 4, text: 'Купить хлеб и изучить Vue.js', completed: false },
-  { id: 5, text: 'Изучить основы React', completed: false },
-]);
+// const tasks = ref([
+//   { id: 1, text: 'Купить хлеб и изучить Vue.js', completed: false },
+//   { id: 2, text: 'Купить продуктов и изучить Vue.js', completed: false },
+//   { id: 3, text: 'Занятся спортом и изучить Vue.js', completed: false },
+//   { id: 4, text: 'Купить хлеб и изучить Vue.js', completed: false },
+//   { id: 5, text: 'Изучить основы React', completed: false },
+// ]);
 
 const newTaskText = ref('');
 
-const todoTasks = computed(() => tasks.value.filter((t) => !t.completed));
-const doneTasks = computed(() => tasks.value.filter((t) => t.completed));
 const router = useRouter();
 
+const todoStore = useTodoStore()
+const { todoTasks, doneTasks } = storeToRefs(todoStore)
+
+onMounted(() => {
+  todoStore.fetchTodos()
+})
+
 const addTask = () => {
-  if (newTaskText.value.trim()) {
-    tasks.value.push({
-      id: Date.now(),
-      text: newTaskText.value.trim(),
-      completed: false,
-    });
-    newTaskText.value = '';
-  }
-};
+  todoStore.addTask(newTaskText.value)
+  newTaskText.value = ''
+}
 
 const deleteTask = (id) => {
-  tasks.value = tasks.value.filter((t) => t.id !== id);
-};
+  todoStore.deleteTask(id)
+}
+
+const toggleTask = (id) => {
+  todoStore.toggleTask(id)
+}
+
+const { isAbove: isLayoutWideEnough } = useMinWidth(MIN_TODO_LAYOUT_PX - 1)
 
 const onTodoNav = (id) => {
-  router.push(`/todo/${id}`);
-};
-
-onMounted(async () => {
-  const rawTodos = await getTodos();
-  if (!Array.isArray(rawTodos)) return;
-  tasks.value = rawTodos.map((todo) => ({
-    id: todo.id,
-    text: todo.title ?? todo.text ?? '',
-    completed: Boolean(todo.completed),
-  }));
-});
+  router.push(`/todo/${id}`)
+}
 
 const counterComposable = useCounter();
 const counterButton = useCounter();
@@ -58,6 +56,7 @@ const counterButton = useCounter();
 <template>
   <div class="todo-app">
     <div class="container">
+      <template v-if="isLayoutWideEnough">
       <hr />
       <p>{{ counterComposable.count }}</p>
       <button @click="counterComposable.increment">+</button>
@@ -77,7 +76,7 @@ const counterButton = useCounter();
         <div v-for="task in todoTasks" :key="task.id" class="task-item">
           <span :class="{ completed: task.completed }"> {{ task.text }} </span>
 
-          <GroupIcon @click="task.completed = !task.completed" />
+          <GroupIcon @click="toggleTask(task.id)" />
 
           <button @click="deleteTask(task.id)" class="delete-btn">
             <TrashIcon />
@@ -104,7 +103,7 @@ const counterButton = useCounter();
           <span class="completed-done">{{ task.text }}</span>
 
           <GroupIcon
-            @click="task.completed = !task.completed"
+            @click="toggleTask(task.id)"
             class="task-item-done"
           />
 
@@ -117,6 +116,8 @@ const counterButton = useCounter();
           Ничего не найдено...
         </div>
       </div>
+      </template>
+      <p v-else class="too-small-msg">Sorry, too small</p>
     </div>
   </div>
 </template>
@@ -135,6 +136,12 @@ const counterButton = useCounter();
   padding: 55px 85px 55px 60px;
   width: 432px;
   height: 100%;
+}
+
+.too-small-msg {
+  margin: 0;
+  color: #9e78cf;
+  font-size: 16px;
 }
 
 .add-task {
