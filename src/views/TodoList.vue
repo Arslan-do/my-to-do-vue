@@ -2,13 +2,14 @@
 import { ref, computed, onMounted } from 'vue';
 import { getTodos } from '@/api/todo/getTodos';
 import { useRouter } from 'vue-router';
-import TrashIcon from '@/components/icons/TrashIcon.vue'; 
+import TrashIcon from '@/components/icons/TrashIcon.vue';
 import GroupIcon from '@/components/icons/GroupIcon.vue';
 import VectorIcon from '@/components/icons/VectorIcon.vue';
 import ArrowForward from '@/components/icons/ArrowForward.vue';
+import { useCounter } from '@/composables/useCounter';
 
 const tasks = ref([
-  { id: 1, text: 'Купить хлеб и изучить Vue.js', completed: true },
+  { id: 1, text: 'Купить хлеб и изучить Vue.js', completed: false },
   { id: 2, text: 'Купить продуктов и изучить Vue.js', completed: false },
   { id: 3, text: 'Занятся спортом и изучить Vue.js', completed: false },
   { id: 4, text: 'Купить хлеб и изучить Vue.js', completed: false },
@@ -40,7 +41,7 @@ const onTodoNav = (id) => {
   router.push(`/todo/${id}`);
 };
 
-onMounted(async ()=>{
+onMounted(async () => {
   const rawTodos = await getTodos();
   if (!Array.isArray(rawTodos)) return;
   tasks.value = rawTodos.map((todo) => ({
@@ -48,13 +49,19 @@ onMounted(async ()=>{
     text: todo.title ?? todo.text ?? '',
     completed: Boolean(todo.completed),
   }));
-})
+});
 
+const counterComposable = useCounter();
+const counterButton = useCounter();
 </script>
 
 <template>
   <div class="todo-app">
     <div class="container">
+      <hr />
+      <p>{{ counterComposable.count }}</p>
+      <button @click="counterComposable.increment">+</button>
+      <hr />
       <div class="add-task">
         <input
           v-model="newTaskText"
@@ -62,7 +69,7 @@ onMounted(async ()=>{
           placeholder="Add a new task"
         />
         <button @click="addTask" class="add-btn">
-          <VectorIcon/>
+          <VectorIcon />
         </button>
       </div>
       <div class="tasks-section">
@@ -70,14 +77,22 @@ onMounted(async ()=>{
         <div v-for="task in todoTasks" :key="task.id" class="task-item">
           <span :class="{ completed: task.completed }"> {{ task.text }} </span>
 
-          <GroupIcon @click="task.completed = !task.completed"/>
-          
+          <GroupIcon @click="task.completed = !task.completed" />
+
           <button @click="deleteTask(task.id)" class="delete-btn">
-            <TrashIcon/>
+            <TrashIcon />
           </button>
-          <button @click="onTodoNav(task.id)" class="arrow-btn"> 
-            <ArrowForward/>  
+          <button @click="onTodoNav(task.id)" class="arrow-btn">
+            <ArrowForward />
           </button>
+          
+          <div class="counter-btn">
+            <p>{{ counterButton.count }}</p>
+            <button @click="counterButton.increment" class="increment-btn">
+              <VectorIcon />
+            </button>
+          </div>
+
         </div>
       </div>
 
@@ -87,11 +102,14 @@ onMounted(async ()=>{
         </h3>
         <div v-for="task in doneTasks" :key="task.id" class="task-item">
           <span class="completed-done">{{ task.text }}</span>
-          
-            <GroupIcon @click="task.completed = !task.completed" class="task-item-done"/>
-          
+
+          <GroupIcon
+            @click="task.completed = !task.completed"
+            class="task-item-done"
+          />
+
           <button @click="deleteTask(task.id)" class="delete-btn">
-            <TrashIcon/>
+            <TrashIcon />
           </button>
         </div>
 
@@ -104,7 +122,6 @@ onMounted(async ()=>{
 </template>
 
 <style>
-
 .todo-app {
   background-color: #1d1825;
   width: 583px;
@@ -119,7 +136,6 @@ onMounted(async ()=>{
   width: 432px;
   height: 100%;
 }
-
 
 .add-task {
   height: 40px;
@@ -167,7 +183,7 @@ onMounted(async ()=>{
   margin-bottom: 0;
 }
 
-.task-item {  
+.task-item {
   background: #15101c;
   display: flex;
   align-items: center;
@@ -176,7 +192,7 @@ onMounted(async ()=>{
   border-radius: 10px;
 }
 
-.task-item span { 
+.task-item span {
   width: 227px;
   height: 19px;
   color: #9e78cf;
@@ -193,7 +209,7 @@ onMounted(async ()=>{
   text-decoration: line-through;
 }
 
-.task-item-done{
+.task-item-done {
   cursor: pointer;
 }
 
@@ -208,13 +224,35 @@ onMounted(async ()=>{
 }
 
 .arrow-btn {
-      width: 30px;
+  width: 30px;
   height: 30px;
   padding: 4px 8px;
   background: none;
   border: none;
   cursor: pointer;
   color: #9e78cf;
+}
+
+.increment-btn {
+  width: 30px;
+  height: 30px;
+  background-color: #9e78cf;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 40px;
+  font-weight: 100;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.counter-btn{
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 
@@ -233,5 +271,4 @@ onMounted(async ()=>{
   font-size: 16px;
   line-height: 100%;
 }
-
 </style>

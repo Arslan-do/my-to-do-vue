@@ -7,6 +7,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 const routes = [
   { path: '/', component: TodoList},
   { path: '/todo/:id', component: TodoDetail},
+  
 ]
 
 export const router = createRouter({
