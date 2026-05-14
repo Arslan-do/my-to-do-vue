@@ -11,13 +11,6 @@ import { useTodoStore } from '@/store/todo'
 import { useMinWidth } from '@/composables/useMinWidth'
 import { MIN_TODO_LAYOUT_PX } from '@/constants/breakpoints'
 
-// const tasks = ref([
-//   { id: 1, text: 'Купить хлеб и изучить Vue.js', completed: false },
-//   { id: 2, text: 'Купить продуктов и изучить Vue.js', completed: false },
-//   { id: 3, text: 'Занятся спортом и изучить Vue.js', completed: false },
-//   { id: 4, text: 'Купить хлеб и изучить Vue.js', completed: false },
-//   { id: 5, text: 'Изучить основы React', completed: false },
-// ]);
 
 const newTaskText = ref('');
 
@@ -57,10 +50,6 @@ const counterButton = useCounter();
   <div class="todo-app">
     <div class="container">
       <template v-if="isLayoutWideEnough">
-      <hr />
-      <p>{{ counterComposable.count }}</p>
-      <button @click="counterComposable.increment">+</button>
-      <hr />
       <div class="add-task">
         <input
           v-model="newTaskText"
@@ -84,14 +73,6 @@ const counterButton = useCounter();
           <button @click="onTodoNav(task.id)" class="arrow-btn">
             <ArrowForward />
           </button>
-          
-          <div class="counter-btn">
-            <p>{{ counterButton.count }}</p>
-            <button @click="counterButton.increment" class="increment-btn">
-              <VectorIcon />
-            </button>
-          </div>
-
         </div>
       </div>
 
@@ -239,29 +220,6 @@ const counterButton = useCounter();
   cursor: pointer;
   color: #9e78cf;
 }
-
-.increment-btn {
-  width: 30px;
-  height: 30px;
-  background-color: #9e78cf;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  font-size: 40px;
-  font-weight: 100;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.counter-btn{
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
 
 .h32 {
   width: 135px;
