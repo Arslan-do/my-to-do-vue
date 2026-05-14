@@ -1,60 +1,55 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { getTodos } from '@/api/todo/getTodos';
-import { useRouter } from 'vue-router';
-import TrashIcon from '@/components/icons/TrashIcon.vue'; 
-import GroupIcon from '@/components/icons/GroupIcon.vue';
-import VectorIcon from '@/components/icons/VectorIcon.vue';
-import ArrowForward from '@/components/icons/ArrowForward.vue';
+import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+import TrashIcon from '@/components/icons/TrashIcon.vue'
+import GroupIcon from '@/components/icons/GroupIcon.vue'
+import VectorIcon from '@/components/icons/VectorIcon.vue'
+import ArrowForward from '@/components/icons/ArrowForward.vue'
+import { useCounter } from '@/composables/useCounter'
+import { useTodoStore } from '@/store/todo'
+import { useMinWidth } from '@/composables/useMinWidth'
+import { MIN_TODO_LAYOUT_PX } from '@/constants/breakpoints'
 
-const tasks = ref([
-  { id: 1, text: 'Купить хлеб и изучить Vue.js', completed: true },
-  { id: 2, text: 'Купить продуктов и изучить Vue.js', completed: false },
-  { id: 3, text: 'Занятся спортом и изучить Vue.js', completed: false },
-  { id: 4, text: 'Купить хлеб и изучить Vue.js', completed: false },
-  { id: 5, text: 'Изучить основы React', completed: false },
-]);
 
 const newTaskText = ref('');
 
-const todoTasks = computed(() => tasks.value.filter((t) => !t.completed));
-const doneTasks = computed(() => tasks.value.filter((t) => t.completed));
 const router = useRouter();
 
-const addTask = () => {
-  if (newTaskText.value.trim()) {
-    tasks.value.push({
-      id: Date.now(),
-      text: newTaskText.value.trim(),
-      completed: false,
-    });
-    newTaskText.value = '';
-  }
-};
+const todoStore = useTodoStore()
+const { todoTasks, doneTasks } = storeToRefs(todoStore)
 
-const deleteTask = (id) => {
-  tasks.value = tasks.value.filter((t) => t.id !== id);
-};
-
-const onTodoNav = (id) => {
-  router.push(`/todo/${id}`);
-};
-
-onMounted(async ()=>{
-  const rawTodos = await getTodos();
-  if (!Array.isArray(rawTodos)) return;
-  tasks.value = rawTodos.map((todo) => ({
-    id: todo.id,
-    text: todo.title ?? todo.text ?? '',
-    completed: Boolean(todo.completed),
-  }));
+onMounted(() => {
+  todoStore.fetchTodos()
 })
 
+const addTask = () => {
+  todoStore.addTask(newTaskText.value)
+  newTaskText.value = ''
+}
+
+const deleteTask = (id) => {
+  todoStore.deleteTask(id)
+}
+
+const toggleTask = (id) => {
+  todoStore.toggleTask(id)
+}
+
+const { isAbove: isLayoutWideEnough } = useMinWidth(MIN_TODO_LAYOUT_PX - 1)
+
+const onTodoNav = (id) => {
+  router.push(`/todo/${id}`)
+}
+
+const counterComposable = useCounter();
+const counterButton = useCounter();
 </script>
 
 <template>
   <div class="todo-app">
     <div class="container">
+      <template v-if="isLayoutWideEnough">
       <div class="add-task">
         <input
           v-model="newTaskText"
@@ -62,7 +57,7 @@ onMounted(async ()=>{
           placeholder="Add a new task"
         />
         <button @click="addTask" class="add-btn">
-          <VectorIcon/>
+          <VectorIcon />
         </button>
       </div>
       <div class="tasks-section">
@@ -70,13 +65,13 @@ onMounted(async ()=>{
         <div v-for="task in todoTasks" :key="task.id" class="task-item">
           <span :class="{ completed: task.completed }"> {{ task.text }} </span>
 
-          <GroupIcon @click="task.completed = !task.completed"/>
-          
+          <GroupIcon @click="toggleTask(task.id)" />
+
           <button @click="deleteTask(task.id)" class="delete-btn">
-            <TrashIcon/>
+            <TrashIcon />
           </button>
-          <button @click="onTodoNav(task.id)" class="arrow-btn"> 
-            <ArrowForward/>  
+          <button @click="onTodoNav(task.id)" class="arrow-btn">
+            <ArrowForward />
           </button>
         </div>
       </div>
@@ -87,11 +82,14 @@ onMounted(async ()=>{
         </h3>
         <div v-for="task in doneTasks" :key="task.id" class="task-item">
           <span class="completed-done">{{ task.text }}</span>
-          
-            <GroupIcon @click="task.completed = !task.completed" class="task-item-done"/>
-          
+
+          <GroupIcon
+            @click="toggleTask(task.id)"
+            class="task-item-done"
+          />
+
           <button @click="deleteTask(task.id)" class="delete-btn">
-            <TrashIcon/>
+            <TrashIcon />
           </button>
         </div>
 
@@ -99,12 +97,13 @@ onMounted(async ()=>{
           Ничего не найдено...
         </div>
       </div>
+      </template>
+      <p v-else class="too-small-msg">Sorry, too small</p>
     </div>
   </div>
 </template>
 
 <style>
-
 .todo-app {
   background-color: #1d1825;
   width: 583px;
@@ -120,6 +119,11 @@ onMounted(async ()=>{
   height: 100%;
 }
 
+.too-small-msg {
+  margin: 0;
+  color: #9e78cf;
+  font-size: 16px;
+}
 
 .add-task {
   height: 40px;
@@ -167,7 +171,7 @@ onMounted(async ()=>{
   margin-bottom: 0;
 }
 
-.task-item {  
+.task-item {
   background: #15101c;
   display: flex;
   align-items: center;
@@ -176,7 +180,7 @@ onMounted(async ()=>{
   border-radius: 10px;
 }
 
-.task-item span { 
+.task-item span {
   width: 227px;
   height: 19px;
   color: #9e78cf;
@@ -193,7 +197,7 @@ onMounted(async ()=>{
   text-decoration: line-through;
 }
 
-.task-item-done{
+.task-item-done {
   cursor: pointer;
 }
 
@@ -208,7 +212,7 @@ onMounted(async ()=>{
 }
 
 .arrow-btn {
-      width: 30px;
+  width: 30px;
   height: 30px;
   padding: 4px 8px;
   background: none;
@@ -216,7 +220,6 @@ onMounted(async ()=>{
   cursor: pointer;
   color: #9e78cf;
 }
-
 
 .h32 {
   width: 135px;
@@ -233,5 +236,4 @@ onMounted(async ()=>{
   font-size: 16px;
   line-height: 100%;
 }
-
 </style>
