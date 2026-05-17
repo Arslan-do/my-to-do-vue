@@ -5,7 +5,7 @@ export function useMinWidth(breakpointPx: number) {
   const query = `(min-width: ${breakpointPx + 1}px)`
   let mql: MediaQueryList | undefined
 
-  const sync = (): void => {
+  const sync = () => {
     if (mql) isAbove.value = mql.matches
   }
 

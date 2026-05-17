@@ -10,7 +10,7 @@ export const useTodoStore = defineStore('todo', () => {
   const todoTasks = computed(() => tasks.value.filter((t) => !t.completed))
   const doneTasks = computed(() => tasks.value.filter((t) => t.completed))
 
-  function addTask(text: string): void {
+  function addTask(text: string) {
     const trimmed = text.trim()
     if (!trimmed) return
     tasks.value.push({
@@ -20,16 +20,16 @@ export const useTodoStore = defineStore('todo', () => {
     })
   }
 
-  function deleteTask(id: number): void {
+  function deleteTask(id: number) {
     tasks.value = tasks.value.filter((t) => t.id !== id)
   }
 
-  function toggleTask(id: number): void {
+  function toggleTask(id: number) {
     const task = tasks.value.find((t) => t.id === id)
     if (task) task.completed = !task.completed
   }
 
-  async function fetchTodos(): Promise<void> {
+  async function fetchTodos(){
     const rawTodos = await getTodos()
     if (!Array.isArray(rawTodos)) return
     tasks.value = rawTodos.map(mapApiTodoToTask)
