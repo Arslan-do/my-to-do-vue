@@ -1,19 +1,23 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-export function useMinWidth(breakpointPx) {
+export function useMinWidth(breakpointPx: number) {
   const isAbove = ref(false)
   const query = `(min-width: ${breakpointPx + 1}px)`
-  let mql
+  let mql: MediaQueryList | undefined
+
   const sync = () => {
-    isAbove.value = mql.matches
+    if (mql) isAbove.value = mql.matches
   }
+
   onMounted(() => {
     mql = window.matchMedia(query)
     sync()
     mql.addEventListener('change', sync)
   })
+
   onUnmounted(() => {
     mql?.removeEventListener('change', sync)
   })
+
   return { isAbove }
 }

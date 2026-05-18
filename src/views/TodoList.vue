@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
@@ -10,6 +10,8 @@ import { useCounter } from '@/composables/useCounter'
 import { useTodoStore } from '@/store/todo'
 import { useMinWidth } from '@/composables/useMinWidth'
 import { MIN_TODO_LAYOUT_PX } from '@/constants/breakpoints'
+import type { Task } from '@/types/todo'
+
 
 
 const newTaskText = ref('');
@@ -28,22 +30,20 @@ const addTask = () => {
   newTaskText.value = ''
 }
 
-const deleteTask = (id) => {
+const deleteTask = (id: Task['id']) => {
   todoStore.deleteTask(id)
 }
 
-const toggleTask = (id) => {
+const toggleTask = (id: Task['id']) => {
   todoStore.toggleTask(id)
 }
 
 const { isAbove: isLayoutWideEnough } = useMinWidth(MIN_TODO_LAYOUT_PX - 1)
 
-const onTodoNav = (id) => {
+const onTodoNav = (id: Task['id']) => {
   router.push(`/todo/${id}`)
 }
 
-const counterComposable = useCounter();
-const counterButton = useCounter();
 </script>
 
 <template>

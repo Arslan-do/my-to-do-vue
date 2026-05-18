@@ -1,14 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { getTodo } from '@/api/todo/getTodo';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import type { ApiTodo } from '@/types/todo';
 
 const route = useRoute();
-const todo = ref(null);
+const todo = ref<ApiTodo | null>(null)
 
 
 onMounted( async ()=> {
-  const newTodo =  await getTodo(route.params.id);
+  const newTodo =  await getTodo(route.params.id as string);
   todo.value = newTodo;
 });
 
